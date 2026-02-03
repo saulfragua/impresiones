@@ -901,13 +901,71 @@ body.menu-open .nav-overlay {
     font-size: 0.95rem;
 }
 
-/* ========== Contacto Section ========== */
+/* ========== Contacto Section - Moderno, Dinámico, Profesional ========== */
 .contacto {
     padding: 5rem 0 6rem;
     background: var(--color-light);
     position: relative;
     z-index: 2;
-    overflow: visible;
+    overflow: hidden;
+}
+
+/* Fondo animado sutil */
+.contacto-bg-pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.4;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(3, 60, 148, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(3, 60, 148, 0.05) 0%, transparent 50%),
+        linear-gradient(180deg, transparent 0%, rgba(3, 60, 148, 0.02) 100%);
+    pointer-events: none;
+}
+
+.contacto-bg-shapes {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.contacto .shape {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(3, 60, 148, 0.08) 0%, rgba(3, 60, 148, 0.02) 100%);
+    animation: floatShape 15s ease-in-out infinite;
+}
+
+.contacto .shape-1 {
+    width: 300px;
+    height: 300px;
+    top: -100px;
+    right: -50px;
+    animation-delay: 0s;
+}
+
+.contacto .shape-2 {
+    width: 200px;
+    height: 200px;
+    bottom: 10%;
+    left: -80px;
+    animation-delay: -5s;
+}
+
+.contacto .shape-3 {
+    width: 150px;
+    height: 150px;
+    top: 50%;
+    right: 15%;
+    animation-delay: -10s;
+}
+
+@keyframes floatShape {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(10px, -15px) scale(1.02); }
+    66% { transform: translate(-5px, 10px) scale(0.98); }
 }
 
 .contacto .container {
@@ -922,10 +980,50 @@ body.menu-open .nav-overlay {
     align-items: start;
 }
 
+/* Formulario con inputs modernos */
 .contacto-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
+}
+
+.contacto-form-card {
+    background: var(--color-white);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 24px rgba(3, 60, 148, 0.08);
+    border: 1px solid rgba(3, 60, 148, 0.06);
+    transition: box-shadow 0.4s ease;
+}
+
+.contacto-form-card:hover {
+    box-shadow: 0 8px 32px rgba(3, 60, 148, 0.12);
+}
+
+.contacto-form .input-group {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: inputReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.contacto-form.visible .input-group:nth-child(1) { animation-delay: 0.15s; }
+.contacto-form.visible .input-group:nth-child(2) { animation-delay: 0.25s; }
+.contacto-form.visible .input-group:nth-child(3) { animation-delay: 0.35s; }
+.contacto-form.visible .input-group:nth-child(4) { animation-delay: 0.45s; }
+
+@keyframes inputReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .contacto-form .input-group {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
 }
 
 .contacto-form .btn {
@@ -937,64 +1035,183 @@ body.menu-open .nav-overlay {
     scroll-margin-top: 80px;
 }
 
-.contacto-form input,
-.contacto-form textarea {
-    padding: 1rem 1.2rem;
+/* Input groups con floating labels */
+.input-group {
+    position: relative;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 1.1rem 1.2rem 0.6rem;
     border: 2px solid #e0e0e0;
     border-radius: var(--radius);
     font-family: inherit;
     font-size: 1rem;
-    transition: var(--transition);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     background: var(--color-white);
+    resize: none;
 }
 
-.contacto-form input:focus,
-.contacto-form textarea:focus {
+.input-group textarea {
+    padding-top: 1.2rem;
+    min-height: 120px;
+}
+
+.input-group label {
+    position: absolute;
+    left: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-group-textarea label {
+    top: 1.5rem;
+    transform: none;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(3, 60, 148, 0.1);
-    transform: translateY(-1px);
+    box-shadow: 0 0 0 4px rgba(3, 60, 148, 0.12);
 }
 
+.input-group input:focus ~ label,
+.input-group input:not(:placeholder-shown) ~ label,
+.input-group textarea:focus ~ label,
+.input-group textarea:not(:placeholder-shown) ~ label {
+    top: 0.5rem;
+    transform: translateY(0);
+    font-size: 0.75rem;
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.input-group-textarea input:focus ~ label,
+.input-group-textarea textarea:focus ~ label,
+.input-group-textarea textarea:not(:placeholder-shown) ~ label {
+    top: 0.6rem;
+}
+
+.input-border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-group:focus-within .input-border {
+    width: 100%;
+}
+
+/* Botón enviar con icono animado */
+.btn-contact-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    overflow: hidden;
+}
+
+.btn-contact-submit .btn-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-contact-submit .btn-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.btn-contact-submit:hover .btn-icon {
+    transform: translate(4px, -4px) rotate(15deg);
+}
+
+.btn-contact-submit:active .btn-icon {
+    transform: translate(2px, -2px) scale(0.95);
+}
+
+/* Líneas directas - Cards interactivas */
 .contacto-info h3 {
     color: var(--color-primary);
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: 700;
 }
 
 .contacto-info {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .info-item {
     display: flex;
     gap: 1.25rem;
     align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-white);
+    border-radius: var(--radius);
+    border: 2px solid transparent;
+    box-shadow: 0 2px 12px rgba(3, 60, 148, 0.06);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.info-item-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.info-item:hover {
+    box-shadow: 0 8px 25px rgba(3, 60, 148, 0.12);
+}
+
+.info-item-link:hover {
+    transform: translateX(8px);
+    border-color: rgba(3, 60, 148, 0.2);
 }
 
 .info-icon {
     flex-shrink: 0;
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(3, 60, 148, 0.08);
-    border-radius: 12px;
+    border-radius: 14px;
     color: var(--color-primary);
-    transition: var(--transition);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .info-item:hover .info-icon {
     background: rgba(3, 60, 148, 0.15);
-    transform: scale(1.05);
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.info-item:hover .info-icon svg {
+    animation: iconPulse 0.6s ease;
+}
+
+@keyframes iconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
 }
 
 .info-icon svg {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
 }
 
 .info-icon-whatsapp {
@@ -1003,16 +1220,33 @@ body.menu-open .nav-overlay {
 }
 
 .info-item:hover .info-icon-whatsapp {
-    background: rgba(37, 211, 102, 0.2);
+    background: rgba(37, 211, 102, 0.25);
 }
 
-.info-item h4 {
+.info-content h4 {
     color: var(--color-primary);
     margin-bottom: 0.25rem;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .info-item p {
     color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+/* Staggered reveal para info items */
+.contacto-info .info-item.reveal-up {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: var(--delay, 0s);
+}
+
+.contacto-info .info-item.reveal-up.visible {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 /* ========== Redes Sociales Section ========== */
@@ -1336,6 +1570,10 @@ body.menu-open .nav-overlay {
     .contacto-grid,
     .ubicacion-grid {
         grid-template-columns: 1fr;
+    }
+
+    .contacto-form-card {
+        padding: 1.5rem;
     }
 
     .ubicacion-map iframe {
