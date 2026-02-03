@@ -1,0 +1,11 @@
+CÓMO AGREGAR TU UBICACIÓN EN GOOGLE MAPS
+=========================================
+
+1. Ve a https://www.google.com/maps
+2. Busca tu dirección o negocio
+3. Haz clic en "Compartir"
+4. Selecciona la pestaña "Insertar un mapa"
+5. Copia el código del iframe (la parte del src="...")
+6. En index.html, busca la sección "Ubicación - Google Maps"
+7. Reemplaza el valor de src="..." en el iframe con tu enlace
+8. Actualiza la dirección y el enlace "Cómo llegar" con tu ubicación real
