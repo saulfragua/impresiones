@@ -970,12 +970,40 @@ body.menu-open .nav-overlay {
 
 .info-item {
     display: flex;
-    gap: 1rem;
+    gap: 1.25rem;
     align-items: flex-start;
 }
 
 .info-icon {
-    font-size: 1.5rem;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(3, 60, 148, 0.08);
+    border-radius: 12px;
+    color: var(--color-primary);
+    transition: var(--transition);
+}
+
+.info-item:hover .info-icon {
+    background: rgba(3, 60, 148, 0.15);
+    transform: scale(1.05);
+}
+
+.info-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.info-icon-whatsapp {
+    color: #25d366;
+    background: rgba(37, 211, 102, 0.12);
+}
+
+.info-item:hover .info-icon-whatsapp {
+    background: rgba(37, 211, 102, 0.2);
 }
 
 .info-item h4 {
