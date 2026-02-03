@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollReveal();
     initParallax();
     initSectionTransitions();
+    initScrollProgress();
+    initSectionParallax();
 });
 
 /**
@@ -193,30 +195,80 @@ function initParallax() {
 }
 
 /**
- * Transiciones suaves entre secciones - efecto de fade al cambiar
+ * Transiciones únicas entre secciones - cada sección con su propia animación
  */
 function initSectionTransitions() {
-    const sections = document.querySelectorAll('.section-reveal');
+    const sections = document.querySelectorAll('.section-reveal[data-reveal]');
 
     const observerOptions = {
         root: null,
-        rootMargin: '-10% 0px -10% 0px',
-        threshold: 0
+        rootMargin: '-5% 0px -5% 0px',
+        threshold: 0.08
     };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('section-visible');
-                entry.target.style.opacity = '1';
             }
         });
     }, observerOptions);
 
-    sections.forEach(section => {
-        section.style.transition = 'opacity 0.6s ease';
-        observer.observe(section);
-    });
+    sections.forEach(section => observer.observe(section));
+}
+
+/**
+ * Indicador de progreso de scroll - barra en la parte superior
+ */
+function initScrollProgress() {
+    const progressBar = document.querySelector('.scroll-progress-bar');
+    if (!progressBar) return;
+
+    const updateProgress = () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = `${progress}%`;
+    };
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+}
+
+/**
+ * Parallax con más movimiento - contenido se desplaza según scroll entre secciones
+ */
+function initSectionParallax() {
+    const containers = document.querySelectorAll('.section-reveal[data-reveal] .container');
+    let ticking = false;
+
+    const handleParallax = () => {
+        const viewportHeight = window.innerHeight;
+
+        containers.forEach(container => {
+            const section = container.closest('section');
+            if (!section || !section.classList.contains('section-visible')) return;
+
+            const rect = section.getBoundingClientRect();
+            const sectionCenter = rect.top + rect.height / 2;
+            const viewportCenter = viewportHeight * 0.35;
+            const distance = sectionCenter - viewportCenter;
+            const offset = Math.max(-35, Math.min(35, distance * 0.06));
+
+            container.style.transform = `translateY(${offset}px)`;
+        });
+        ticking = false;
+    };
+
+    const onScroll = () => {
+        if (!ticking) {
+            requestAnimationFrame(handleParallax);
+            ticking = true;
+        }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
 }
 
 /**
